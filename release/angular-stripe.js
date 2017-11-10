@@ -101,7 +101,7 @@ function Nodeback (apply, resolve, reject) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"assert-function":10,"to-array":31}],4:[function(_dereq_,module,exports){
+},{"assert-function":9,"to-array":31}],4:[function(_dereq_,module,exports){
 /*!
  * array-last <https://github.com/jonschlinkert/array-last>
  *
@@ -128,21 +128,7 @@ module.exports = function last(arr, num) {
   return res;
 };
 
-},{"array-slice":6,"is-number":5}],5:[function(_dereq_,module,exports){
-/*!
- * is-number <https://github.com/jonschlinkert/is-number>
- *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
- * Licensed under the MIT License
- */
-
-'use strict';
-
-module.exports = function isNumber(n) {
-  return !!(+n) || n === 0 || n === '0';
-};
-
-},{}],6:[function(_dereq_,module,exports){
+},{"array-slice":5,"is-number":17}],5:[function(_dereq_,module,exports){
 /*!
  * array-slice <https://github.com/jonschlinkert/array-slice>
  *
@@ -179,7 +165,7 @@ function idx(arr, pos, end) {
 
   return pos;
 }
-},{}],7:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 
 // rawAsap provides everything we need except exception management.
@@ -247,7 +233,7 @@ RawTask.prototype.call = function () {
     }
 };
 
-},{"./raw":8}],8:[function(_dereq_,module,exports){
+},{"./raw":7}],7:[function(_dereq_,module,exports){
 (function (global){
 "use strict";
 
@@ -327,9 +313,12 @@ function flush() {
 
 // Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
 // have WebKitMutationObserver but not un-prefixed MutationObserver.
-// Must use `global` instead of `window` to work in both frames and web
+// Must use `global` or `self` instead of `window` to work in both frames and web
 // workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
-var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+
+/* globals self */
+var scope = typeof global !== "undefined" ? global : self;
+var BrowserMutationObserver = scope.MutationObserver || scope.WebKitMutationObserver;
 
 // MutationObservers are desirable because they have high priority and work
 // reliably everywhere they are implemented.
@@ -471,7 +460,7 @@ rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 // https://github.com/tildeio/rsvp.js/blob/cddf7232546a9cf858524b75cde6f9edf72620a7/lib/rsvp/asap.js
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 'use strict'
 
 var assert = _dereq_('assert-ok')
@@ -482,7 +471,7 @@ module.exports = function assertEqual (a, b) {
   assert(a === b, format('expected `%s` to equal `%s`', print(a), print(b)))
 }
 
-},{"assert-ok":11,"print-value":27,"simple-format":29}],10:[function(_dereq_,module,exports){
+},{"assert-ok":10,"print-value":27,"simple-format":29}],9:[function(_dereq_,module,exports){
 'use strict'
 
 module.exports = function assertFunction (value) {
@@ -491,7 +480,7 @@ module.exports = function assertFunction (value) {
   }
 }
 
-},{}],11:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 'use strict'
 
 module.exports = function assertOk (value, message) {
@@ -500,24 +489,24 @@ module.exports = function assertOk (value, message) {
   }
 }
 
-},{}],12:[function(_dereq_,module,exports){
+},{}],11:[function(_dereq_,module,exports){
 'use strict'
-
-var toArray = _dereq_('to-array')
 
 module.exports = CallAll
 
 function CallAll (fns) {
-  fns = Array.isArray(fns) ? fns : toArray(arguments)
+  fns = Array.isArray(fns) ? fns : arguments
   return function callAll () {
     var args = arguments
-    return fns.map(function (fn) {
-      return fn.apply(null, args)
-    })
+    var ret = new Array(fns.length)
+    for (var i = 0, ii = fns.length; i < ii; i++) {
+      ret[i] = fns[i].apply(null, args)
+    }
+    return ret
   }
 }
 
-},{"to-array":31}],13:[function(_dereq_,module,exports){
+},{}],12:[function(_dereq_,module,exports){
 /**
  * cuid.js
  * Collision-resistant UID generator for browsers and node.
@@ -629,7 +618,7 @@ function CallAll (fns) {
 
 }(this.applitude || this));
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],13:[function(_dereq_,module,exports){
 var wrappy = _dereq_('wrappy')
 module.exports = wrappy(dezalgo)
 
@@ -653,7 +642,7 @@ function dezalgo (cb) {
   }
 }
 
-},{"asap":7,"wrappy":32}],15:[function(_dereq_,module,exports){
+},{"asap":6,"wrappy":32}],14:[function(_dereq_,module,exports){
 'use strict';
 var isObj = _dereq_('is-obj');
 
@@ -766,7 +755,7 @@ function getPathSegments(path) {
 	return parts;
 }
 
-},{"is-obj":18}],16:[function(_dereq_,module,exports){
+},{"is-obj":18}],15:[function(_dereq_,module,exports){
 'use strict'
 
 var assertFn = _dereq_('assert-function')
@@ -804,7 +793,7 @@ function Ear () {
   return listeners
 }
 
-},{"assert-function":10}],17:[function(_dereq_,module,exports){
+},{"assert-function":9}],16:[function(_dereq_,module,exports){
 (function (global){
 var win;
 
@@ -821,6 +810,20 @@ if (typeof window !== "undefined") {
 module.exports = win;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],17:[function(_dereq_,module,exports){
+/*!
+ * is-number <https://github.com/jonschlinkert/is-number>
+ *
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Licensed under the MIT License
+ */
+
+'use strict';
+
+module.exports = function isNumber(n) {
+  return !!(+n) || n === 0 || n === '0';
+};
+
 },{}],18:[function(_dereq_,module,exports){
 'use strict';
 module.exports = function (x) {
@@ -829,11 +832,6 @@ module.exports = function (x) {
 };
 
 },{}],19:[function(_dereq_,module,exports){
-module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-},{}],20:[function(_dereq_,module,exports){
 /*!
  * isobject <https://github.com/jonschlinkert/isobject>
  *
@@ -849,7 +847,12 @@ module.exports = function isObject(o) {
   return o != null && typeof o === 'object' && !isArray(o);
 };
 
-},{"isarray":19}],21:[function(_dereq_,module,exports){
+},{"isarray":20}],20:[function(_dereq_,module,exports){
+module.exports = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+},{}],21:[function(_dereq_,module,exports){
 exports = module.exports = stringify
 exports.getSerialize = serializer
 
@@ -932,7 +935,7 @@ function Lazy (methods, load) {
   }
 }
 
-},{"array-last":4,"assert-equal":9,"assert-ok":11,"call-all-fns":12,"dezalgo":14,"dot-prop":23,"to-array":31}],23:[function(_dereq_,module,exports){
+},{"array-last":4,"assert-equal":8,"assert-ok":10,"call-all-fns":11,"dezalgo":13,"dot-prop":23,"to-array":31}],23:[function(_dereq_,module,exports){
 'use strict';
 var isObj = _dereq_('is-obj');
 
@@ -1113,7 +1116,7 @@ function jsonpCallback (options, callback) {
   return id
 }
 
-},{"assert-ok":11,"cuid":13,"dezalgo":14,"ear":16,"global/window":17,"load-script":25,"query-extend":28,"xtend":33}],25:[function(_dereq_,module,exports){
+},{"assert-ok":10,"cuid":12,"dezalgo":13,"ear":15,"global/window":16,"load-script":25,"query-extend":28,"xtend":33}],25:[function(_dereq_,module,exports){
 
 module.exports = function load (src, opts, cb) {
   var head = document.head || document.getElementsByTagName('head')[0]
@@ -1228,7 +1231,7 @@ function stringify (value) {
   return safeStringify(value, null, '')
 }
 
-},{"isobject":20,"json-stringify-safe":21}],28:[function(_dereq_,module,exports){
+},{"isobject":19,"json-stringify-safe":21}],28:[function(_dereq_,module,exports){
 !function(glob) {
 
   var queryToObject = function(query) {
@@ -1443,7 +1446,7 @@ function toErrback (method, receiver) {
   }
 }
 
-},{"dot-prop":15,"xtend/mutable":34}],31:[function(_dereq_,module,exports){
+},{"dot-prop":14,"xtend/mutable":34}],31:[function(_dereq_,module,exports){
 module.exports = toArray
 
 function toArray(list, index) {
@@ -1576,7 +1579,7 @@ function Success (fn, context) {
   }
 }
 
-},{"dot-prop":15,"lazy-async":22,"load-script-global":24,"stripe-errback":30}],36:[function(_dereq_,module,exports){
+},{"dot-prop":14,"lazy-async":22,"load-script-global":24,"stripe-errback":30}],36:[function(_dereq_,module,exports){
 'use strict'
 
 var LazyStripe = _dereq_('./lazy')
@@ -1587,7 +1590,7 @@ function stripeProvider () {
   var key = null
   var stripe = null
 
-  this.url = 'https://js.stripe.com/v2/'
+  this.url = 'https://js.stripe.com/v3/'
   this.setPublishableKey = function setPublishableKey (_key) {
     key = _key
   }

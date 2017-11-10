@@ -8,7 +8,7 @@ function stripeProvider () {
   var key = null
   var stripe = null
 
-  this.url = 'https://js.stripe.com/v2/'
+  this.url = 'https://js.stripe.com/v3/'
   this.setPublishableKey = function setPublishableKey (_key) {
     key = _key
   }
